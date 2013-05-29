@@ -109,7 +109,8 @@
               and split it into multiple arguments or elements</li>
               <li class="fragment">Can be used with an array literal and call
               expressions</li>
-              <li class="fragment">Only array literals currently implemented in Firefox</li>
+              <li class="fragment">Only array literals currently implemented in
+              Firefox</li>
             </ul>
           </section>
 
@@ -170,6 +171,8 @@ SyntaxError: syntax error
               <li class="fragment">Closer to Ruby's Enumerator class</li>
               <li class="fragment">Iterators interface with Generators making
               them useful together</li>
+              <li class="fragment">A Generator is a function marked with a
+              `*`</li>
               <li class="fragment">Works in Firefox, but non-compliant (without
               the *)</li>
             </ul>
@@ -179,44 +182,244 @@ SyntaxError: syntax error
             <h2>Generators - Basic Example</h2>
 
             <pre><code class="javascript" data-trim>
-            > // Note the * marking this function as a generator
-            > function* f(x) {
-            >   while(true) {
-            >     x = x * 2;
-            >     yield x;
-            >   }
-            > }
+> // Note the * marking this function as a generator
+> function* f(x) {
+>   while(true) {
+>     x = x * 2;
+>     yield x;
+>   }
+> }
 
-            > var g = f(2); // returns an instance of Generator
-            > g.next();
-            4
-            > g.next();
-            8
-            > g.next();
-            16
+> var g = f(2); // returns an instance of Generator
+> g.next();
+4
+> g.next();
+8
+> g.next();
+16
             </code></pre>
           </section>
 
           <section>
-            <h2>Generators - With Iterators</h2>
+            <h2>Generators - Example With Iterators</h2>
             <p>Iterating through the properities of an object.</p>
-            <p>This could be a factory method on the object itself.</p>
+            <p>Could be a factory method on Object.prototype but it's
+            opt-in.</p>
 
             <pre><code class="javascript" data-trim>
-            > function* items(o) {
-            >   for (var k in o) {
-            >     yield [k, o[k]];
-            >   }
-            > }
+> function* items(o) {
+>   for (var k in o) {
+>     yield [k, o[k]];
+>   }
+> }
 
-            > for (var [k, v] of items({p: 3, q: 4, r: 5})) {
-            >   print(k, v)
-            > }
-            "p" 3
-            "q" 4
-            "r" 5
+> for (var [k, v] of items({p: 3, q: 4, r: 5})) {
+>   print(k, v)
+> }
+"p" 3
+"q" 4
+"r" 5
             </code></pre>
           </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Maps</h2>
+
+            <h3>Like hashes but more fun</h3>
+
+            <ul>
+              <li class="fragment">The key can be any kind of object</li>
+              <li class="fragment">Like Ruby</li>
+              <li class="fragment">Enumerable</li>
+              <li class="fragment">Values are not garbage collected</li>
+              <li class="fragment">Supported in Firefox</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Maps - Example</h2>
+            <p>Remember to scroll!</p>
+
+            <pre><code class="javascript" data-trim>
+> var mapKey1 = { key: "value" };
+> var mapKey2 = { another_key: "another_value" };
+
+> // A new global object called Map
+> var map = new Map([[mapKey1, 42], [mapKey2, true]]);
+
+> map.size;
+2
+> map.get(mapKey1);
+42
+> map.get(mapKey2);
+true
+> map.has(mapKey1);
+true
+> map.delete(mapKey1);
+> map.size;
+1
+
+> map.set(mapKey1, 100);
+> map.get(mapKey1);
+100
+
+> // Enumerable example
+> for (var [k, v] of map) print(k, v)
+mapKey2 true
+mapKey1 100
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>WeakMaps</h2>
+
+          <h3>Similar to Maps but with weak referencing</h3>
+
+          <ul>
+            <li class="fragment">They are garbage collected</li>
+            <li class="fragment">As such, they cannot not be enumerated</li>
+            <li class="fragment">Also no size property</li>
+            <li class="fragment">The GC adds overhead</li>
+            <li class="fragment">Supported in Firefox and Chrome (with
+            Experimental JS enabled)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>RegExp sticky (y) flag</h2>
+
+          <ul>
+            <li class="fragment">Match in the target string starting from the
+            regexp's lastIndex property</li>
+            <li class="fragment">Therefore ^ can match at indexes other than
+            the first character</li>
+            <li class="fragment">Avoids O(n²) complexities, caused by slicing the
+            string</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>String .startsWith, .endsWith and .contains</h2>
+
+          <ul>
+            <li class="fragment">Pretty much self-explanatory</li>
+          </ul>
+        </section>
+
+        <section>
+          <section>
+            <h2>Classes</h2>
+
+            <h3>Classical OO classes brought to JS</h3>
+
+            <ul>
+              <li class="fragment">Many proposals</li>
+              <li class="fragment">Original proposals all had a very full specifications</li>
+              <li class="fragment">Due to disagreement a minimal approach has
+              been taken in order to avoid a deadlock</li>
+              <li class="fragment">Enter: maximally_minimal_classes</li>
+              <li class="fragment">This proposal has been accepted into the draft</li>
+              <li class="fragment">There is no implementation of this draft anywhere</li>
+              <li class="fragment">No private syntax</li>
+              <li class="fragment">A step in the right direction</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Classes - Example</h2>
+
+            <pre><code class="javascript" data-trim>
+
+class Balloonicorn extends Unicorn {
+  // A method named "constructor" defines the class’s
+  // constructor function.
+  constructor(name, hugs) {
+    super(name, hugs);
+
+    // Public property
+    this.name = name;
+
+    // A private property via the Name object
+    // More on the Name object on the next slide
+    var pHugs = Name.create();
+    this[pHugs] = hugs;
+  }
+
+  // The "method" here is simply a function property on some object
+  hug(target) {
+    log('The balloonicorn hugs ' + target);
+  }
+
+  // Getters and setters
+  get hugs() {
+    return this[pHugs];
+  }
+
+  set hugs(value) {
+    this[pHugs] = value;
+  }
+
+  get can_fly() {
+    return false;
+  }
+}
+
+// The only way to create prototype data properties is by
+// modifying the prototype outside of the declaration.
+Balloonicorn.prototype.colour = "pink";
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>Name Object</h2>
+
+          <h3>Another new global object</h3>
+
+          <ul>
+            <li class="fragment">Used to add private properties to any object</li>
+            <li class="fragment">Strongly encapsulated</li>
+            <li class="fragment">Deeply frozen</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Name Object</h2>
+
+          <h3></h3>
+
+          <ul>
+            <li class="fragment"></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Useful links</h2>
+
+          <ul>
+            <li class="fragment">
+              <a href="http://kangax.github.io/es5-compat-table/es6/">
+                http://kangax.github.io/es5-compat-table/es6/
+              </a>
+              <p>- The current state of ES6 implementation. Well maintained.</p>
+            </li>
+
+            <li class="fragment">
+              <a href="http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts">
+                http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts
+              </a>
+              <p>- The current ES6 specification drafts for download</p>
+            </li>
+
+            <li class="fragment">
+              <a href="http://www.github.com/danhart/es6-harmony-slides">
+                http://www.github.com/danhart/es6-harmony-slides
+              </a>
+            </li>
+          </ul>
         </section>
       </div>
     </div>
