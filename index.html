@@ -332,7 +332,6 @@ mapKey1 100
             <h2>Classes - Example</h2>
 
             <pre><code class="javascript" data-trim>
-
 class Balloonicorn extends Unicorn {
   // A method named "constructor" defines the class’s
   // constructor function.
@@ -383,76 +382,162 @@ Balloonicorn.prototype.colour = "pink";
             <li class="fragment">Used to add private properties to any object</li>
             <li class="fragment">Strongly encapsulated</li>
             <li class="fragment">Deeply frozen</li>
+            <li class="fragment">Similar to Symbols</li>
           </ul>
         </section>
 
         <section>
-          <h2>Let</h2>
+          <section>
+            <h2>Let</h2>
 
-          <h3></h3>
+            <h3>Declares a block scope local variable</h3>
 
-          <ul>
-            <li class="fragment"></li>
-          </ul>
+            <ul>
+              <li class="fragment">is being dubbed the "new" var</li>
+              <li class="fragment">Unlike var, let isn't hoisted out of the block</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Let - Example</h2>
+
+            <pre><code class="javascript" data-trim>
+// Function example
+function f() {
+  var a = 5;
+  var b = 10;
+
+  if (a === 5) {
+    let a = 4; // The scope is inside the if-block
+    var b = 1; // The scope is inside the function
+
+    console.log(a);  // 4
+    console.log(b);  // 1
+  }
+
+  console.log(a); // 5
+  console.log(b); // 1
+}
+
+// For loop example
+for (let i = 0; i < 10; i++) {
+  alert(i); // 1, 2, 3, 4 ... 9
+}
+
+alert(i); // i is not defined
+            </code></pre>
+          </section>
         </section>
 
         <section>
-          <h2>Symbols</h2>
+          <section>
+            <h2>Modules</h2>
 
-          <h3></h3>
+            <ul>
+              <li class="fragment">Provide modularity</li>
+              <li class="fragment">Obviate the need for globals</li>
+              <li class="fragment">Compatibility with browser and non-browser
+                environments</li>
+              <li class="fragment">Asynchronous external loading</li>
+              <li class="fragment">interoperability with existing JS module
+                systems like AMD, CommonJS, and Node.js</li>
+            </ul>
+          </section>
 
-          <ul>
-            <li class="fragment"></li>
-          </ul>
+          <section>
+            <h2>Modules - Example</h2>
+
+            <pre><code class="javascript" data-trim>
+module 'math' {
+    export function sum(x, y) {
+        return x + y;
+    }
+    export var pi = 3.141593;
+}
+
+// Importing the modules exports
+import {sum, pi} from 'math';
+alert("2π = " + sum(pi, pi));
+
+// A static module reference
+// Module instances as first-class objects
+module Math from 'math';
+alert("2π = " + Math.sum(Math.pi, Math.pi));
+            </code></pre>
+          </section>
         </section>
 
         <section>
-          <h2>Modules</h2>
-
-          <h3></h3>
-
-          <ul>
-            <li class="fragment"></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Extend fo mixins</h2>
+          <h2>Extend for mixins</h2>
 
           <h3>Object.mixin</h3>
 
           <ul>
-            <li class="fragment"></li>
+            <li class="fragment">No proposals currently in the draft spec</li>
+            <li class="fragment">Polyfill available - but probably non-compliant</li>
           </ul>
         </section>
 
         <section>
-          <h2>Object literals??</h2>
+          <h2>Object literals</h2>
 
-          <h3></h3>
+          <h3>Several enhancements to Object Literals</h3>
 
           <ul>
-            <li class="fragment"></li>
+            <li class="fragment">Short hands</li>
+            <li class="fragment">Literal Prototype Operator &st;|</li>
           </ul>
         </section>
 
         <section>
           <h2>Arrow functions</h2>
 
-          <h3></h3>
+          <h3>Defining functions the ES6 way</h3>
+
+          <pre><code class="javascript" data-trim>
+// ES5
+var square = function(x) {
+   return x * x;
+}
+
+// Arrow functions
+var square = x => { return x * x; };
+
+// Arrow function + expression closure
+var square = x => x * x;
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Using ES6 Today</h2>
+
+          <h3>On the web</h3>
 
           <ul>
-            <li class="fragment"></li>
+            <li class="fragment">There are various tools available to
+              down-compile ES6 into ES5 (or lower). E.g. Traceur</li>
+            <li class="fragment">People are already coding polyfills (e.g.
+              es6-shim)</li>
+          </ul>
+
+          <h3 class="fragment">In a controlled environment</h3>
+          <ul>
+            <li class="fragment">Little support from V8 at the moment</li>
+            <li class="fragment">Firefox's SpiderMonkey has by far the most
+              support</li>
           </ul>
         </section>
 
         <section>
-          <h2>Native Promises</h2>
-
-          <h3></h3>
+          <h2>Promises</h2>
 
           <ul>
-            <li class="fragment"></li>
+            <li class="fragment">This are coming together with various async
+              functions</li>
+            <li class="fragment">Much is still as proposals and few examples of
+            usage at this stage</li>
+            <li class="fragment">But we can assume they will be similar to other
+            promise JS implementations such as jQuery</li>
           </ul>
         </section>
 
